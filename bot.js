@@ -28,7 +28,7 @@ bot.onText(/\/start/, (msg) => {
 // Handle Inline Button Clicks
 bot.on("callback_query", (query) => {
     const chatId = query.message.chat.id;
-  
+    const myVideoFileId = "AAMCBQADGQEB2Eo3Z8V3lvlL72eb04q1-8TWqvVtDZIAAi0YAAJaiyhWy93pezWBsssBAAdtAAM2BA";
     if (query.data === "join_premium") {
       bot.sendMessage(
         chatId,
@@ -44,13 +44,18 @@ bot.on("callback_query", (query) => {
         }
       );
     } else if (query.data === "continue_payment") {
-      bot.sendMessage(chatId, "🔗 Here is a demo video for payment instructions:");
-      bot.sendVideo(chatId, "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4", {
-        caption: "Watch this video to understand the payment process.",
-        reply_markup: {
-          inline_keyboard: [[{ text: "📤 Share Payment Screenshot", callback_data: "share_screenshot" }]],
-        },
-      });
+        bot.sendMessage(chatId, 
+          "🔗 Here are the demo videos for payment instructions:\n\n" +
+          "💳 **PhonePe Gift Card**: [Watch the Video](https://youtube.com/shorts/ItLTW7O9RJs?si=c1tbRT4uSUyP48qr)\n\n" +
+          "🎁 **Amazon Gift Card**:[Watch the Video](https://youtube.com/shorts/1KW3y1VJlY0?si=oSwgiWGeqXbOPM7A)", 
+          {
+            parse_mode: "Markdown",
+            reply_markup: {
+              inline_keyboard: [
+                [{ text: "📤 Share Payment Screenshot", callback_data: "share_screenshot" }]
+              ],
+            },
+        });
     } else if (query.data === "share_screenshot") {
       bot.sendMessage(
         chatId,
@@ -117,4 +122,18 @@ bot.on("photo", (msg) => {
     caption: `📸 *New Payment Proof Uploaded*\n\n👤 *User*: ${username}\n🆔 *User ID*: ${chatId}\n📝 *Caption*: ${caption}\n\nVerify the payment.`,
     parse_mode: "Markdown",
   });
+});
+
+
+const express = require("express");
+const app = express();
+
+const PORT = process.env.PORT || 3435; // Match the Koyeb exposed port
+
+app.get("/", (req, res) => {
+    res.send("Bot is running!");
+});
+
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });
